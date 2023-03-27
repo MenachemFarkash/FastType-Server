@@ -6,13 +6,28 @@ const Record = new mongoose.model(
         name: {
             type: String,
         },
-        accuracy: {
+        a10: {
             type: String,
         },
-        wpm: {
+        a15: {
             type: String,
         },
-        wordCount: {
+        a20: {
+            type: String,
+        },
+        a30: {
+            type: String,
+        },
+        w10: {
+            type: String,
+        },
+        w15: {
+            type: String,
+        },
+        w20: {
+            type: String,
+        },
+        w30: {
             type: String,
         },
     })

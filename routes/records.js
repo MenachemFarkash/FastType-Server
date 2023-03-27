@@ -3,13 +3,6 @@ const app = express.Router();
 
 const Record = require("../Schema/RecordScheme");
 
-const exampleRecord = {
-    name: "farkash",
-    accuracy: 99.5,
-    wpm: 52,
-    wordsCount: 10,
-};
-
 app.get("/", async (req, res) => {
     const records = await Record.find().limit(10);
     res.send(records);
@@ -17,15 +10,35 @@ app.get("/", async (req, res) => {
 
 app.post("/", async (req, res) => {
     console.log(req.body);
-    const { name, accuracy, wpm, wordCount } = req.body;
-    const record = await new Record({
-        name,
-        accuracy,
-        wpm,
-        wordCount,
-    });
-    const result = record.save();
-    res.send(record);
+    const { name, a10, a15, a20, a30, w10, w15, w20, w30 } = req.body;
+
+    try {
+        const nameExist = await Record.findOne({ name: name });
+        if (nameExist === null) {
+            const record = await new Record({
+                name,
+                a10,
+                a15,
+                a20,
+                a30,
+                w10,
+                w15,
+                w20,
+                w30,
+            });
+            const result = record.save();
+            res.send(record);
+        } else {
+            const record = await Record.findOneAndUpdate(
+                { name: name },
+                { a10, a15, a20, a30, w10, w15, w20, w30 },
+                { new: true }
+            );
+            res.send(record);
+        }
+    } catch (err) {
+        res.send(err.message);
+    }
 });
 
 module.exports = app;
